@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inspection Result</title>
+  <style>
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1>Inspection Result Table</h1>
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Call Number</th>
+        <th>Project Name</th>
+        <th>PO Number</th>
+        <th>Item Description</th>
+        <th>Quantity</th>
+        <th>PSM Name</th>
+        <th>Contact Number</th>
+        <th>QA Engineer Name</th>
+        <th>Inspection Agency</th>
+        <th>Inspection Agency Email</th>
+        <th>Inspector Name</th>
+        <th>Inspection Start Date</th>
+        <th>Inspection End Date</th>
+        <th>Report Number</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const tableBody = document.querySelector('#resultTable tbody');
+
+    for (let key in localStorage) {
+      if (key.startsWith('call_')) {
+        const data = JSON.parse(localStorage.getItem(key));
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${data.callNumber || ''}</td>
+          <td>${data.projectName || ''}</td>
+          <td>${data.poNumber || ''}</td>
+          <td>${data.itemDesc || ''}</td>
+          <td>${data.quantity || ''}</td>
+          <td>${data.psmName || ''}</td>
+          <td>${data.psmContact || ''}</td>
+          <td>${data.qaName || ''}</td>
+          <td>${data.inspectionAgency || ''}</td>
+          <td>${data.inspectionAgencyEmail || ''}</td>
+          <td>${data.inspectorName || ''}</td>
+          <td>${data.startDateTime || ''}</td>
+          <td>${data.endDateTime || ''}</td>
+          <td>${data.reportNumber || ''}</td>
+          <td>${data.remarks || ''}</td>
+        `;
+        tableBody.appendChild(row);
+      }
+    }
+  </script>
+</body>
+</html>

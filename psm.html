@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PSM Entry</title>
+</head>
+<body>
+  <h1>PSM Form</h1>
+  <form id="psmLookup">
+    <label>Inspection Call Number: <input type="text" id="psmCallNumber" required></label>
+    <button type="submit">Lookup</button>
+  </form>
+  <form id="psmForm" style="display:none;">
+    <label>PSM Name: <input type="text" name="psmName" required></label>
+    <label>PSM Contact Number: <input type="text" name="psmContact" required></label>
+    <button type="submit">Submit</button>
+  </form>
+  <script>
+    const psmLookup = document.getElementById('psmLookup');
+    const psmForm = document.getElementById('psmForm');
+
+    psmLookup.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = document.getElementById('psmCallNumber').value;
+      const data = localStorage.getItem('call_' + id);
+      if (data) {
+        psmForm.style.display = 'block';
+        psmForm.dataset.callNumber = id;
+      } else {
+        alert('Call Number not found');
+      }
+    });
+
+    psmForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(psmForm);
+      const extra = Object.fromEntries(formData.entries());
+      const id = psmForm.dataset.callNumber;
+      const original = JSON.parse(localStorage.getItem('call_' + id));
+      localStorage.setItem('call_' + id, JSON.stringify({ ...original, ...extra }));
+      alert('PSM data updated');
+    });
+  </script>
+</body>
+</html>

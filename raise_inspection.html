@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Raise Inspection Call</title>
+  <style>
+    form { width: 400px; margin: auto; display: flex; flex-direction: column; }
+    label { margin-top: 10px; }
+    button { margin-top: 20px; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Raise Inspection Call</h1>
+  <form id="inspectionForm">
+    <label>PSM Mail ID: <input type="email" name="psmMailId" required></label>
+    <label>PO Number: <input type="text" name="poNumber" required></label>
+    <label>Date of Sending Call: <input type="date" name="callDate" required></label>
+    <label>Inspection Required On: <input type="date" name="inspectionDate" required></label>
+    <label>Project Code: <input type="text" name="projectCode" required></label>
+    <label>Project Name: <input type="text" name="projectName" required></label>
+    <label>Contact Person Name: <input type="text" name="contactName" required></label>
+    <label>Contact Person Mobile Number: <input type="text" name="contactNumber" required></label>
+    <label>Vendor Name: <input type="text" name="vendorName" required></label>
+    <label>Place of Inspection: <input type="text" name="inspectionPlace" required></label>
+    <label>Item Description: <input type="text" name="itemDesc" required></label>
+    <label>Quantity: <input type="number" name="quantity" required></label>
+    <button type="submit">Submit</button>
+  </form>
+  <script>
+    document.getElementById('inspectionForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      const callNumber = Math.floor(1000 + Math.random() * 9000).toString();
+      data.callNumber = callNumber;
+      localStorage.setItem('call_' + callNumber, JSON.stringify(data));
+      alert('Inspection Call Raised. Call Number: ' + callNumber);
+    });
+  </script>
+</body>
+</html>

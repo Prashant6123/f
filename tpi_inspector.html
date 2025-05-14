@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TPI Inspector</title>
+</head>
+<body>
+  <h1>TPI Inspector Form</h1>
+  <form id="tpiLookupForm">
+    <label>Inspection Call Number: <input type="text" id="tpiCallNumber" required></label>
+    <button type="submit">Lookup</button>
+  </form>
+  <form id="tpiForm" style="display:none;">
+    <label>Inspector Name: <input type="text" name="inspectorName" required></label>
+    <label>Inspection Start Date & Time: <input type="datetime-local" name="startDateTime" required></label>
+    <label>Inspection End Date & Time: <input type="datetime-local" name="endDateTime" required></label>
+    <label>Inspection Report Number: <input type="text" name="reportNumber" required></label>
+    <label>Remarks: <textarea name="remarks"></textarea></label>
+    <button type="submit">Submit</button>
+  </form>
+  <script>
+    const tpiLookupForm = document.getElementById('tpiLookupForm');
+    const tpiForm = document.getElementById('tpiForm');
+
+    tpiLookupForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = document.getElementById('tpiCallNumber').value;
+      const data = localStorage.getItem('call_' + id);
+      if (data) {
+        tpiForm.style.display = 'block';
+        tpiForm.dataset.callNumber = id;
+      } else {
+        alert('Call Number not found');
+      }
+    });
+
+    tpiForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(tpiForm);
+      const extra = Object.fromEntries(formData.entries());
+      const id = tpiForm.dataset.callNumber;
+      const original = JSON.parse(localStorage.getItem('call_' + id));
+      localStorage.setItem('call_' + id, JSON.stringify({ ...original, ...extra }));
+      alert('TPI Inspector data updated');
+    });
+  </script>
+</body>
+</html>

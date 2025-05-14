@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QA Engineer</title>
+</head>
+<body>
+  <h1>QA Engineer Form</h1>
+  <form id="qaLookup">
+    <label>Inspection Call Number: <input type="text" id="qaCallNumber" required></label>
+    <button type="submit">Lookup</button>
+  </form>
+  <form id="qaForm" style="display:none;">
+    <label>QA Engineer Name: <input type="text" name="qaName" required></label>
+    <label>Inspection Agency:
+      <select name="inspectionAgency" required>
+        <option value="TUV SUD">TUV SUD</option>
+        <option value="TUV NORD">TUV NORD</option>
+        <option value="TPL">TPL</option>
+        <option value="BV">BV</option>
+        <option value="LRQA">LRQA</option>
+        <option value="Other">Other</option>
+      </select>
+    </label>
+    <label>Inspection Agency Email: <input type="email" name="inspectionAgencyEmail" required></label>
+    <button type="submit">Submit</button>
+  </form>
+  <script>
+    const qaLookup = document.getElementById('qaLookup');
+    const qaForm = document.getElementById('qaForm');
+
+    qaLookup.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = document.getElementById('qaCallNumber').value;
+      const data = localStorage.getItem('call_' + id);
+      if (data) {
+        qaForm.style.display = 'block';
+        qaForm.dataset.callNumber = id;
+      } else {
+        alert('Call Number not found');
+      }
+    });
+
+    qaForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(qaForm);
+      const extra = Object.fromEntries(formData.entries());
+      const id = qaForm.dataset.callNumber;
+      const original = JSON.parse(localStorage.getItem('call_' + id));
+      localStorage.setItem('call_' + id, JSON.stringify({ ...original, ...extra }));
+      alert('QA Engineer data updated');
+    });
+  </script>
+</body>
+</html>
